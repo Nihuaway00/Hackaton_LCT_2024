@@ -32,8 +32,6 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RequestMapping("/auth")
 public class AuthController {
     @Autowired
-    private Environment env;
-    @Autowired
     private UserService userService;
     @Autowired
     private PasswordService passwordService;

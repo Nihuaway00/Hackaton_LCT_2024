@@ -16,7 +16,6 @@ public class UserController {
     private UserService service;
 
     @GetMapping("/")
-
     public @ResponseBody List<UserProfile> findAll(){
         return this.service.findAll();
     }
