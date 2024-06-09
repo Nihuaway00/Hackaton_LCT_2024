@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @Data
 public class ApiException extends Exception{
     private HttpStatus status;
-
+    private String error;
     public ApiException(String message, HttpStatus status){
         super(message, null, false, false);
         this.status = status;

@@ -2,17 +2,14 @@ package pixels.pro.fit.controller;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pixels.pro.fit.dao.entity.Password;
 import pixels.pro.fit.dao.entity.Token;
 import pixels.pro.fit.dao.entity.UserProfile;
@@ -25,11 +22,13 @@ import pixels.pro.fit.service.UserService;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
 public class AuthController {
     @Autowired
     private UserService userService;
@@ -65,7 +64,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody @Valid UserLoginDto data, HttpServletResponse response) throws ApiException {
+    public String login(@RequestBody @Valid UserLoginDto data, HttpServletRequest request, HttpServletResponse response) throws ApiException {
         UserProfile user = userService.findByEmail(data.getEmail()).orElseThrow(() -> new ApiException("Пользователя с такой почтой не существует", HttpStatus.BAD_REQUEST));
         Password password = passwordService.findById(user.getId()).orElseThrow(() -> new ApiException("Пользователь не имеет пароля. Если это вылетело то пиздец. Пиши мне", HttpStatus.BAD_REQUEST));
 
@@ -85,7 +84,8 @@ public class AuthController {
         String accessToken = accessTokenProvider.generateToken(user.getId().toString());
         String refreshToken = refreshTokenProvider.generateToken(user.getId().toString());
 
-        response.setHeader(AUTHORIZATION, accessToken);
+        Cookie cookie = new Cookie("accessToken", accessToken);
+        response.addCookie(cookie);
 
         Token token = new Token();
         token.setAccessToken(accessToken);
@@ -97,9 +97,14 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> refresh(@RequestBody @Valid UserRefreshDto data, HttpServletResponse response) throws ApiException {
+    public ResponseEntity<?> refresh(@RequestBody @Valid UserRefreshDto data, HttpServletRequest request, HttpServletResponse response) throws ApiException {
         boolean isVerify = refreshTokenProvider.verifyToken(data.getRefreshToken());
         if(!isVerify) throw new ApiException("Токен не валиден", HttpStatus.BAD_REQUEST);
+
+        Optional<Cookie> authCookie = Stream.of(Optional.ofNullable(request.getCookies()).orElse(new Cookie[0]))
+                .filter(cookie -> cookie.getName().equals("accessToken")).findFirst();
+
+        authCookie.ifPresent(cookie -> System.out.println(cookie.getValue()));
 
         String userId = refreshTokenProvider.getClaims(data.getRefreshToken()).getSubject();
         UserProfile user = userService.findById(Long.valueOf(userId)).orElseThrow(() -> new ApiException("Такого пользователя не существует", HttpStatus.BAD_REQUEST));
@@ -109,7 +114,8 @@ public class AuthController {
         String accessToken = accessTokenProvider.generateToken(userId);
         String refreshToken = refreshTokenProvider.generateToken(userId);
 
-        response.setHeader(AUTHORIZATION, accessToken);
+        Cookie cookie = new Cookie("accessToken", accessToken);
+        response.addCookie(cookie);
 
         Token newToken = new Token();
         newToken.setAccessToken(accessToken);

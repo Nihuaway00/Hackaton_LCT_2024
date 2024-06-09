@@ -1,5 +1,7 @@
 package pixels.pro.fit.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -18,25 +20,36 @@ import pixels.pro.fit.filter.AccessTokenFilter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+    @Autowired
+    private AccessTokenProvider accessTokenProvide;
     private static final String[] AUTH_WHITELIST = {
             "/auth/**",
             "/v3/api-docs/**",
             "/swagger-ui/**"
     };
+
+    private AccessTokenFilter jwtFilter()
+    {
+        return new AccessTokenFilter(accessTokenProvide);
+    }
     @Bean
     @Order(1)
-    public SecurityFilterChain authFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         return http
                 .securityMatcher(AUTH_WHITELIST)
                 .csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(Customizer.withDefaults())
+                .sessionManagement(Customizer.withDefaults())
                 .build();
     }
 
     @Bean
-    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain authFilterChain(HttpSecurity http) throws Exception{
         return http
+                .securityMatcher("/users/**")
                 .csrf(AbstractHttpConfigurer::disable)
-                .addFilterBefore(new AccessTokenFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter(), BasicAuthenticationFilter.class)
+                .sessionManagement(Customizer.withDefaults())
                 .build();
     }
 }
