@@ -15,9 +15,9 @@ public class UserRegistrationRequest {
     private String name;
     @NotBlank
     private String surname;
-    @Email
+    //@Email
     private String email;
     @NotBlank
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,20}$")
+    //@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,20}$")
     private String password;
 }

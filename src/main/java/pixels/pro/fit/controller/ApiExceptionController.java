@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pixels.pro.fit.dto.ApiException;
+import pixels.pro.fit.dto.NeedAuthorizeException;
 
 import java.rmi.ServerException;
 import java.security.SignatureException;
@@ -33,13 +34,19 @@ public class ApiExceptionController {
         return new ResponseEntity<>(new ApiException(ex.getMessage()), HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler({ExpiredJwtException.class, AccessDeniedException.class, SignatureException.class})
+    @ExceptionHandler({BadCredentialsException.class,AccessDeniedException.class})
     protected ResponseEntity<ApiException> forbidden(Exception ex){
         return new ResponseEntity<>(new ApiException(ex.getMessage()), HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler({BadCredentialsException.class})
+
+    @ExceptionHandler({ExpiredJwtException.class,  SignatureException.class})
     protected ResponseEntity<ApiException> unauthorized(Exception ex){
+        return new ResponseEntity<>(new ApiException(ex.getMessage()), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({NeedAuthorizeException.class})
+    protected ResponseEntity<ApiException> needAuthorize(Exception ex){
         return new ResponseEntity<>(new ApiException(ex.getMessage()), HttpStatus.I_AM_A_TEAPOT);
     }
 }

@@ -1,5 +1,6 @@
 package pixels.pro.fit.dao.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +14,6 @@ import java.util.Collection;
 @Entity
 @Table
 @Builder
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
