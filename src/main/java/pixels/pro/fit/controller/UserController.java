@@ -1,22 +1,19 @@
 package pixels.pro.fit.controller;
 
-import io.swagger.v3.oas.annotations.headers.Header;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import pixels.pro.fit.dao.entity.UserProfile;
-import pixels.pro.fit.service.UserService;
-
-import java.util.List;
+import pixels.pro.fit.dao.entity.UserPrincipal;
+import pixels.pro.fit.service.UserPrincipalService;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    private UserService service;
-
-    @GetMapping("/")
-    public @ResponseBody List<UserProfile> findAll(){
-        return this.service.findAll();
+    private UserPrincipalService userPrincipalService;
+    @GetMapping("/{id}")
+    public UserPrincipal findById(@PathVariable @NonNull Long id){
+        UserPrincipal userPrincipal = userPrincipalService.findById(id).orElseThrow();
+        return userPrincipal;
     }
 }

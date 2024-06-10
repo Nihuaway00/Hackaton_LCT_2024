@@ -1,7 +1,6 @@
 package pixels.pro.fit.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,11 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserLogoutDto {
+public class UserRefreshRequest {
     @NotBlank
     private String refreshToken;
-
-    @NotEmpty
-    private Long id;
 
 }

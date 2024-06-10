@@ -6,9 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table
 @Data
-
 @AllArgsConstructor
 @NoArgsConstructor
 public class Token {
@@ -16,9 +14,9 @@ public class Token {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private UserProfile user;
-
-    private String refreshToken;
     private String accessToken;
+    private String refreshToken;
+
+    @ManyToOne
+    private UserPrincipal userPrincipal;
 }
