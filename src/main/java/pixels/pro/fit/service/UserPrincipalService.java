@@ -27,6 +27,10 @@ public class UserPrincipalService implements UserDetailsService {
         this.repository.deleteById(id);
     }
 
+    public Optional<UserPrincipal> findByUsername(String username){
+        return repository.findByUsername(username);
+    }
+
     public UserPrincipal getCurrentUser() {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return loadUserByUsername(username);
