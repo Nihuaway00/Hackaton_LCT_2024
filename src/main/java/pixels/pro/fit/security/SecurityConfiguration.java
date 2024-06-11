@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import pixels.pro.fit.filter.JwtAuthenticationFilter;
-import pixels.pro.fit.service.UserPrincipalService;
+import pixels.pro.fit.service.rest.UserPrincipalService;
 
 import java.util.List;
 

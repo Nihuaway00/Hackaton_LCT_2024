@@ -1,4 +1,4 @@
-package pixels.pro.fit.controller;
+package pixels.pro.fit.controller.rest;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.Valid;
@@ -12,10 +12,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pixels.pro.fit.dao.entity.UserPrincipal;
-import pixels.pro.fit.dto.*;
+import pixels.pro.fit.dto.auth.JwtAuthenticationResponse;
+import pixels.pro.fit.dto.auth.UserLoginRequest;
+import pixels.pro.fit.dto.auth.UserRefreshRequest;
+import pixels.pro.fit.dto.auth.UserRegistrationRequest;
+import pixels.pro.fit.exception.ApiException;
+import pixels.pro.fit.exception.NeedAuthorizeException;
 import pixels.pro.fit.service.*;
+import pixels.pro.fit.service.rest.UserPrincipalService;
 
-import java.security.SignatureException;
 import java.util.NoSuchElementException;
 
 @RestController

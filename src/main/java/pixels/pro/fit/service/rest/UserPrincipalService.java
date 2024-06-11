@@ -1,4 +1,4 @@
-package pixels.pro.fit.service;
+package pixels.pro.fit.service.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;

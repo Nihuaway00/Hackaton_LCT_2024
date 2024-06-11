@@ -1,4 +1,4 @@
-package pixels.pro.fit.dto;
+package pixels.pro.fit.dto.auth;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package pixels.pro.fit.dto;
+package pixels.pro.fit.exception;
 
 public class NeedAuthorizeException extends Exception{
 

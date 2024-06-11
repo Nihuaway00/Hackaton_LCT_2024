@@ -1,7 +1,6 @@
 package pixels.pro.fit.controller;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import jakarta.servlet.ServletException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +10,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import pixels.pro.fit.dto.ApiException;
-import pixels.pro.fit.dto.NeedAuthorizeException;
+import pixels.pro.fit.exception.ApiException;
+import pixels.pro.fit.exception.NeedAuthorizeException;
 
-import java.rmi.ServerException;
 import java.security.SignatureException;
 
 @RestControllerAdvice

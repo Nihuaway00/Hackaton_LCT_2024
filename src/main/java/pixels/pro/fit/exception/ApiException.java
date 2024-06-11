@@ -1,4 +1,4 @@
-package pixels.pro.fit.dto;
+package pixels.pro.fit.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
