@@ -8,7 +8,7 @@ import jakarta.persistence.OneToOne;
 
 import java.util.Date;
 
-public class RequestToBecomeTrainer {
+public class RequestTrainer {
     @Id
     private Long id;
     @OneToOne(fetch = FetchType.LAZY)

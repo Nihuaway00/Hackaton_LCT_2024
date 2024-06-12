@@ -10,7 +10,7 @@ import pixels.pro.fit.dto.user.RequestToBecomeTrainerRequest;
 @RestController
 @RequestMapping("/trainer")
 public class TrainerController {
-    @PostMapping("")
+    @PostMapping("/")
     public void requestToBecomeTrainer(@RequestBody @Valid RequestToBecomeTrainerRequest body){
 
     }

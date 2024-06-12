@@ -2,6 +2,9 @@ package pixels.pro.fit.controller.rest;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +26,7 @@ import pixels.pro.fit.service.rest.UserPrincipalService;
 
 import java.util.NoSuchElementException;
 
+@Slf4j
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -39,6 +43,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<JwtAuthenticationResponse> registration(@RequestBody @Valid UserRegistrationRequest data) throws ApiException {
+        log.info(STR."/registration -> email: \{data.getEmail()}");
         UserDetails user = User.builder()
                 .username(data.getEmail())
                 .password(passwordEncoder.encode(data.getPassword()))
@@ -57,6 +62,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtAuthenticationResponse> login(@RequestBody @Valid UserLoginRequest data) throws ApiException {
+        log.info(STR."/login -> email: \{data.getEmail()}");
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 data.getEmail(),
                 data.getPassword()
@@ -72,6 +78,7 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<JwtAuthenticationResponse> refresh(@RequestBody @Valid UserRefreshRequest data) throws NeedAuthorizeException {
         try{
+            log.info(STR."/refresh -> email: \{data.getRefreshToken()}");
             String username = refreshTokenProvider.extractUserName(data.getRefreshToken());
 
             UserPrincipal userPrincipal = userPrincipalService.findByUsername(username).orElseThrow(() -> new NoSuchElementException("Такого пользователя не существует"));
