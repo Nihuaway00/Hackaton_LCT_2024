@@ -5,9 +5,10 @@ import org.springframework.stereotype.Repository;
 import pixels.pro.fit.dao.entity.ChatRoom;
 import pixels.pro.fit.dao.entity.UserPrincipal;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
-    public Optional<ChatRoom> findBySenderIdAndRecipientId(UserPrincipal sender,UserPrincipal recipient);
+    public Optional<ChatRoom> findByMembersContains(List<UserPrincipal> members);
 }

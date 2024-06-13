@@ -43,7 +43,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<JwtAuthenticationResponse> registration(@RequestBody @Valid UserRegistrationRequest data) throws ApiException {
-        log.info(STR."/registration -> email: \{data.getEmail()}");
+        log.info("/registration -> email: " + data.getEmail());
         UserDetails user = User.builder()
                 .username(data.getEmail())
                 .password(passwordEncoder.encode(data.getPassword()))
@@ -62,7 +62,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtAuthenticationResponse> login(@RequestBody @Valid UserLoginRequest data) throws ApiException {
-        log.info(STR."/login -> email: \{data.getEmail()}");
+        log.info("/login -> email: " + data.getEmail());
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 data.getEmail(),
                 data.getPassword()
@@ -78,7 +78,7 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<JwtAuthenticationResponse> refresh(@RequestBody @Valid UserRefreshRequest data) throws NeedAuthorizeException {
         try{
-            log.info(STR."/refresh -> email: \{data.getRefreshToken()}");
+            log.info("/refresh -> email: " + data.getRefreshToken());
             String username = refreshTokenProvider.extractUserName(data.getRefreshToken());
 
             UserPrincipal userPrincipal = userPrincipalService.findByUsername(username).orElseThrow(() -> new NoSuchElementException("Такого пользователя не существует"));

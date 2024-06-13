@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table
 @Data
@@ -14,7 +16,6 @@ public class ChatRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String chatId;
-    private String senderId;
-    private String recipientId;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<UserPrincipal> members;
 }

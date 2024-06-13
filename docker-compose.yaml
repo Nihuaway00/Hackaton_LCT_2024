@@ -1,0 +1,28 @@
+services:
+  database:
+    image: postgres:16
+    container_name: pro.fit.database
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=pro.fit
+    ports:
+      - 15432:5432
+  broker:
+    image: rabbitmq:3.13.3
+    container_name: pro.fit.broker
+    ports:
+      - 5672:5672
+      - 15672:15672
+      - 61613:61613
+    volumes:
+      - ~/Documents/data/rabbitmq/data/:/var/lib/rabbitmq
+      - ~/Documents/data/rabbitmq/log/:/var/log/rabbitmq
+  backend:
+    container_name: pro.fit.backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pro.fit:latest
+    ports:
+      - 1414:1414
