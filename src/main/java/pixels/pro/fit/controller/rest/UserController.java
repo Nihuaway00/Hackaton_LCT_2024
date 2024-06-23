@@ -13,7 +13,6 @@ public class UserController {
     private UserPrincipalService userPrincipalService;
     @GetMapping("/{id}")
     public UserPrincipal findById(@PathVariable @NonNull Long id){
-        UserPrincipal userPrincipal = userPrincipalService.findById(id).orElseThrow();
-        return userPrincipal;
+        return userPrincipalService.findById(id);
     }
 }

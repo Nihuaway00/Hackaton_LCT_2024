@@ -19,32 +19,32 @@ import java.security.SignatureException;
 public class ApiExceptionController {
     @ExceptionHandler({IllegalAccessError.class, MethodArgumentNotValidException.class})
     protected ResponseEntity<ApiException> badRequest(Exception ex){
-        return new ResponseEntity<>(new ApiException(ex.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<ApiException>(new ApiException(ex.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({UsernameNotFoundException.class})
     protected ResponseEntity<ApiException> notFound(Exception ex){
-        return new ResponseEntity<>(new ApiException(ex.getMessage()), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ApiException(ex.getMessage(), HttpStatus.NOT_FOUND), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({DataIntegrityViolationException.class})
     protected ResponseEntity<ApiException> conflict(Exception ex){
-        return new ResponseEntity<>(new ApiException(ex.getMessage()), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(new ApiException(ex.getMessage(), HttpStatus.CONFLICT), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler({BadCredentialsException.class,AccessDeniedException.class})
     protected ResponseEntity<ApiException> forbidden(Exception ex){
-        return new ResponseEntity<>(new ApiException(ex.getMessage()), HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(new ApiException(ex.getMessage(), HttpStatus.FORBIDDEN), HttpStatus.FORBIDDEN);
     }
 
 
     @ExceptionHandler({ExpiredJwtException.class,  SignatureException.class})
     protected ResponseEntity<ApiException> unauthorized(Exception ex){
-        return new ResponseEntity<>(new ApiException(ex.getMessage()), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(new ApiException(ex.getMessage(), HttpStatus.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler({NeedAuthorizeException.class})
     protected ResponseEntity<ApiException> needAuthorize(Exception ex){
-        return new ResponseEntity<>(new ApiException(ex.getMessage()), HttpStatus.I_AM_A_TEAPOT);
+        return new ResponseEntity<>(new ApiException(ex.getMessage(), HttpStatus.I_AM_A_TEAPOT), HttpStatus.I_AM_A_TEAPOT);
     }
 }

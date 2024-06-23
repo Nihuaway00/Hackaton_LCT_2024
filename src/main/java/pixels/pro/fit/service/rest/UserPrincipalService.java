@@ -1,6 +1,8 @@
 package pixels.pro.fit.service.rest;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,31 +13,28 @@ import pixels.pro.fit.dao.entity.UserPrincipal;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class UserPrincipalService implements UserDetailsService {
     @Autowired
     private UserPrincipalRepository repository;
 
-    public void save(UserPrincipal entity) {
-        this.repository.save(entity);
+    public UserPrincipal save(UserPrincipal entity) {
+        return this.repository.saveAndFlush(entity);
     }
 
-    public Optional<UserPrincipal> findById(Long id) {
-        return this.repository.findById(id);
+    public UserPrincipal findById(Long id) throws UsernameNotFoundException {
+        return this.repository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь с таким ID не найден"));
     }
 
     public void deleteById(Long id) {
         this.repository.deleteById(id);
     }
 
-    public Optional<UserPrincipal> findByUsername(String username){
-        return repository.findByUsername(username);
-    }
-
     public UserPrincipal getCurrentUser() {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return loadUserByUsername(username);
     }
-
 
     @Override
     public UserPrincipal loadUserByUsername(String username) throws UsernameNotFoundException {

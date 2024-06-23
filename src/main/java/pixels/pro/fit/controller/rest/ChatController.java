@@ -29,7 +29,7 @@ public class ChatController {
     @SendToUser("/messages/send")
     public ChatMessage sendMessage(ChatMessage message){
         log.info("sent message: {}", message);
-        UserPrincipal recipient = userPrincipalService.findById(message.getRecipientId()).orElseThrow();
+        UserPrincipal recipient = userPrincipalService.findById(message.getRecipientId());
         UserPrincipal sender = userPrincipalService.getCurrentUser();
         List<UserPrincipal> members = List.of(sender, recipient);
 

@@ -81,7 +81,7 @@ public class AuthController {
             log.info("/refresh -> email: " + data.getRefreshToken());
             String username = refreshTokenProvider.extractUserName(data.getRefreshToken());
 
-            UserPrincipal userPrincipal = userPrincipalService.findByUsername(username).orElseThrow(() -> new NoSuchElementException("Такого пользователя не существует"));
+            UserPrincipal userPrincipal = userPrincipalService.loadUserByUsername(username);
             if(!refreshTokenProvider.isTokenValid(data.getRefreshToken(), userPrincipal)) throw new NeedAuthorizeException();
 
             String accessToken = accessTokenProvider.generateToken(userPrincipal);

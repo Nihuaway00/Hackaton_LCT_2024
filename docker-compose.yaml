@@ -20,6 +20,8 @@ services:
       - ~/Documents/data/rabbitmq/log/:/var/log/rabbitmq
   backend:
     container_name: pro.fit.backend
+    environment:
+      - spring.datasource.url=jdbc:postgresql://pro.fit.database:5432/pro.fit
     build:
       context: .
       dockerfile: Dockerfile
